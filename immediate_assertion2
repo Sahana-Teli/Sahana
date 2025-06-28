@@ -1,0 +1,36 @@
+module immediate_assertion2;
+  reg clk,grant,req;//declaration
+ 
+  //genrating clk,grant,req
+  initial begin
+    clk=0;
+    grant=0;
+    req=0;
+  end
+  
+  //clk generation
+  always #5 clk=~clk;
+  
+  //generating the values
+  initial begin
+    #4 req=1;
+    #4 grant=1;
+    #4 req=1;
+    #4 $finish;
+  end
+  
+  //immediate assertion
+  always@(posedge clk)begin  //assertion label
+    if(grant)
+      begin
+        assert (grant&&req) //assertion expression
+          begin
+            $display($time,"passed"); //pass statement
+          end
+            else begin
+             #5 $error($time,"failed");//fail statement
+            end
+      end
+  end
+endmodule
+    
