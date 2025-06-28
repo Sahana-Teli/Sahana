@@ -1,0 +1,33 @@
+module immediate_assertion;
+  bit clk, a, b;
+
+  // Clock generation
+  always #5 clk = ~clk;
+
+  // Stimulus
+  initial begin
+    clk = 0;
+    a = 1; b = 1;
+    #15 
+    //assert (a && b) else $error("Assertion failed at time %0t: a=%b, b=%b", $time, a, b);
+    
+    a = 0; b = 1;
+    #15 
+    //assert (a && b) else $error("Assertion failed at time %0t: a=%b, b=%b", $time, a, b);
+
+    a = 1; b = 0;
+    #15 
+   // assert (a && b) else $error("Assertion failed at time %0t: a=%b, b=%b", $time, a, b);
+
+    a = 0; b = 0;
+    #15 
+    //assert (a && b) else $error("Assertion failed at time %0t: a=%b, b=%b", $time, a, b);
+
+    $finish;
+  end
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+  end
+
+endmodule
